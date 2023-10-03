@@ -1,0 +1,18 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: admin
+    username: root
+    url: jdbc:mysql://localhost:3306/spring-core?useSSL=true&requireSSL=false&createDatabaseIfNotExist=true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      dialect: MySQL8Dialect
+logging:
+  level:
+    org.springframework: DEBUG
