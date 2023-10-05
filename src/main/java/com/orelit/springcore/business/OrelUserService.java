@@ -75,9 +75,9 @@ public class OrelUserService {
      */
     public OrelUserDto updateOrelUser(OrelUserDto orelUserDto) {
         existsOrelUserValidation(orelUserDto.getPhoneNo());
-        OrelUser savedOrelUser= OrelUserTemplate.findByPhoneNo(orelUserDto.getPhoneNo());
-        OrelUser updatedOrelUser= orelUserMapper.convertToUpdateEntity(orelUserDto,savedOrelUser);
-        Department updateDepartmentDetails= departmentMapper.convertUpdateDepartmentDetailDtoToEntity(orelUserDto,savedOrelUser.getDepartment(),savedOrelUser);
+        OrelUser savedOrelUser = OrelUserTemplate.findByPhoneNo(orelUserDto.getPhoneNo());
+        OrelUser updatedOrelUser = orelUserMapper.convertToUpdateEntity(orelUserDto, savedOrelUser);
+        Department updateDepartmentDetails = departmentMapper.convertUpdateDepartmentDetailDtoToEntity(orelUserDto, savedOrelUser.getDepartment(), savedOrelUser);
         updatedOrelUser.setDepartment(updateDepartmentDetails);
         return orelUserMapper.convertToDto(OrelUserTemplate.save(updatedOrelUser));
     }
@@ -115,15 +115,12 @@ public class OrelUserService {
      * @param phoneNo - The phone number to identify the OrelUser to delete.
      */
     public void deleteOrelUser(String phoneNo) {
+
         OrelUser user = OrelUserTemplate.findByPhoneNo(phoneNo);
-
-
         Department department = orelUserDepartmentTemplate.findByUserId(user.getId());
-
         if (department != null) {
             orelUserDepartmentTemplate.delete(department);
         }
-
         OrelUserTemplate.delete(user);
 
     }

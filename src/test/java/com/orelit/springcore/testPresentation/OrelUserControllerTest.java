@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.orelit.springcore.business.OrelUserService;
 import com.orelit.springcore.common.constant.ApiConstant;
 import com.orelit.springcore.common.dto.OrelUserDto;
+import com.orelit.springcore.persistence.entity.OrelUser;
 import com.orelit.springcore.presentation.OrelUserController;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -53,7 +54,6 @@ public class OrelUserControllerTest {
     public void testCreateorelUser() throws Exception {
 
         OrelUserDto orelUserDto = new OrelUserDto();
-
         orelUserDto.setPhoneNo("+941234567890");
         orelUserDto.setLanguage("English");
         orelUserDto.setFirstName("Uditha");
@@ -66,11 +66,7 @@ public class OrelUserControllerTest {
 
 
         when(orelUserService.createOrelUser(any())).thenReturn(orelUserDto);
-        mockMvc.perform(post(ApiConstant.BASE_PATH + "/OrelUser")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(orelUserDto))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        mockMvc.perform(post(ApiConstant.BASE_PATH + "/OrelUser").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(orelUserDto)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     /**
@@ -82,7 +78,6 @@ public class OrelUserControllerTest {
     public void testUpdateOrelUser() throws Exception {
 
         OrelUserDto orelUserDto = new OrelUserDto();
-
         orelUserDto.setPhoneNo("+941234567800");
         orelUserDto.setLanguage("English");
         orelUserDto.setFirstName("Uditha");
@@ -93,11 +88,7 @@ public class OrelUserControllerTest {
         orelUserDto.setDep_email("engineering@example.com");
 
         when(orelUserService.updateOrelUser(any(OrelUserDto.class))).thenReturn(orelUserDto);
-        ResultActions resultActions = mockMvc.perform(put(ApiConstant.BASE_PATH + "/OrelUser")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(orelUserDto))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        ResultActions resultActions = mockMvc.perform(put(ApiConstant.BASE_PATH + "/OrelUser").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(orelUserDto)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
 
@@ -109,13 +100,11 @@ public class OrelUserControllerTest {
 
     @Test
     public void testDeleteorelUser() throws Exception {
-        String phoneNoToDelete = "+941234567890";
 
-        mockMvc.perform(delete(ApiConstant.BASE_PATH + "/OrelUser")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("phoneNo", phoneNoToDelete)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        String phoneNoToDelete = "0123456789";
+        OrelUser user = new OrelUser();
+        user.setId(1L);
+        mockMvc.perform(delete(ApiConstant.BASE_PATH + "/OrelUser").contentType(MediaType.APPLICATION_JSON).param("phoneNo", phoneNoToDelete).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
     }
 
@@ -127,24 +116,19 @@ public class OrelUserControllerTest {
 
     @Test
     public void testGetOrelUserById() throws Exception {
+
         Long userId = 1681209342040948736L;
-        mockMvc.perform(get(ApiConstant.BASE_PATH + "/OrelUser/{id}", userId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        mockMvc.perform(get(ApiConstant.BASE_PATH + "/OrelUser/{id}", userId).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
 
     /**
-     *
      * @throws Exception
      */
     @Test
     public void testGetOrelUserList() throws Exception {
-        mockMvc.perform(get(ApiConstant.BASE_PATH + "/OrelUser/list")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+
+        mockMvc.perform(get(ApiConstant.BASE_PATH + "/OrelUser/list").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
     }
 
