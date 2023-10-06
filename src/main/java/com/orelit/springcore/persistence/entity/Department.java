@@ -3,7 +3,6 @@ package com.orelit.springcore.persistence.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.EnableMBeanExport;
 
 /**
  * Department
