@@ -1,7 +1,6 @@
 package com.orelit.springcore.persistence.repository.impl;
 
 
-import com.orelit.springcore.common.exception.NotFoundException;
 import com.orelit.springcore.persistence.converter.OrelUserMapper;
 import com.orelit.springcore.persistence.entity.OrelUser;
 import com.orelit.springcore.persistence.repository.OrelUserRepository;

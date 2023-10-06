@@ -38,7 +38,6 @@ public class DepartmentMapper {
     }
 
     /**
-     *
      * Convert user data and department data to an entity.
      *
      * @param OrelUserDto -Contains only User details.

@@ -4,7 +4,6 @@ import com.orelit.springcore.persistence.entity.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -20,5 +19,5 @@ import java.util.Optional;
 @Repository
 public interface OrelUserDepartmentRepository extends JpaRepository<Department, Long> {
 
-        Optional<Department> findByOrelUserId(Long userId);
+    Optional<Department> findByOrelUserId(Long userId);
 }

@@ -2,7 +2,6 @@ package com.orelit.springcore.persistence.repository;
 
 
 import com.orelit.springcore.persistence.entity.OrelUser;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

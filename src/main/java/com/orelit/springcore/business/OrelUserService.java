@@ -15,7 +15,7 @@ import com.orelit.springcore.persistence.repository.OrelUserTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 /**
  * Manage OrelUser-related operations.

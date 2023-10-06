@@ -1,9 +1,7 @@
 package com.orelit.springcore.testService;
 
 import com.orelit.springcore.business.OrelUserService;
-import com.orelit.springcore.common.dto.OrelUserDto;
-import com.orelit.springcore.common.exception.NotFoundException;
-import com.orelit.springcore.common.exception.PropertyValidationException;
+import com.orelit.springcore.common.dto.OrelUserDto;;
 import com.orelit.springcore.persistence.converter.DepartmentMapper;
 import com.orelit.springcore.persistence.converter.OrelUserMapper;
 import com.orelit.springcore.persistence.entity.Department;
@@ -21,8 +19,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class OrelUserServiceTest {
@@ -153,7 +149,6 @@ public class OrelUserServiceTest {
         verify(orelUserMapper).convertToDto(orelUser);
         assertThat(userDto).isNotNull();
     }
-
 
 
     /**

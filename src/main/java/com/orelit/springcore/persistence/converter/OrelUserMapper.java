@@ -57,7 +57,7 @@ public class OrelUserMapper {
      * @param orelUserDto - OrelUser DTO from the front.
      * @return
      */
-    public OrelUser convertToUpdateEntity( OrelUserDto orelUserDto,OrelUser oldOrelUser) {
+    public OrelUser convertToUpdateEntity(OrelUserDto orelUserDto, OrelUser oldOrelUser) {
 
         oldOrelUser.setFirstName(orelUserDto.getFirstName());
         oldOrelUser.setMiddleName(orelUserDto.getMiddleName());
