@@ -8,6 +8,7 @@ import com.orelit.springcore.persistence.converter.DepartmentMapper;
 import com.orelit.springcore.persistence.converter.OrelUserMapper;
 import com.orelit.springcore.persistence.entity.Department;
 import com.orelit.springcore.persistence.entity.OrelUser;
+import com.orelit.springcore.persistence.repository.OrelUserDepartmentTemplate;
 import com.orelit.springcore.persistence.repository.OrelUserTemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,9 @@ public class OrelUserServiceTest {
 
     @Mock
     private OrelUserTemplate orelUserTemplate;
+
+    @Mock
+    private OrelUserDepartmentTemplate orelUserDepartmentTemplate;
 
     @Mock
     private OrelUserMapper orelUserMapper;
@@ -115,18 +119,21 @@ public class OrelUserServiceTest {
         assertThat(userDto).isNotNull();
     }
 
-    // Not working
+    // working
 
     @Test
-    void testDeleteOrelUser() {
-        String phoneNo = "+941234567890";
-        OrelUser orelUser = new OrelUser();
-        when(orelUserTemplate.findByPhoneNo(phoneNo)).thenReturn(orelUser);
+    public void testDeleteOrelUser() {
 
+        String phoneNo = "1234567890";
+
+        OrelUser user = new OrelUser();
+        user.setId(1688280425227304960L);
+        when(orelUserTemplate.findByPhoneNo(phoneNo)).thenReturn(user);
+        Department department = new Department();
+        when(orelUserDepartmentTemplate.findByUserId(user.getId())).thenReturn(department);
         orelUserService.deleteOrelUser(phoneNo);
-
-        verify(orelUserTemplate).findByPhoneNo(phoneNo);
-        verify(orelUserTemplate).save(orelUser);
+        verify(orelUserDepartmentTemplate, times(1)).delete(department);
+        verify(orelUserTemplate, times(1)).delete(user);
     }
 
 
