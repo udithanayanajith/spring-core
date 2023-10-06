@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -45,67 +46,70 @@ public class OrelUserServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    //Not working
+    /**
+     * Create user test case.
+     */
     @Test
     public void testCreateOrelUser() {
 
         OrelUserDto orelUserDto = new OrelUserDto();
-        orelUserDto.setPhoneNo("+941234567890");
+        orelUserDto.setPhoneNo("1234567890");
         orelUserDto.setLanguage("English");
         orelUserDto.setFirstName("Uditha");
         orelUserDto.setMiddleName("Nayanajith");
         orelUserDto.setEmail("qwe@gmail.com");
         orelUserDto.setDep_name("Engineering");
-        orelUserDto.setDep_contact_no("+941234567897");
+        orelUserDto.setDep_contact_no("01234567897");
         orelUserDto.setDep_email("engineering@example.com");
 
+        when(orelUserTemplate.findByPhoneNo(orelUserDto.getPhoneNo())).thenReturn(null);
         OrelUser orelUser = new OrelUser();
-
         when(orelUserMapper.convertToEntity(orelUserDto)).thenReturn(orelUser);
-        when(orelUserTemplate.save(any(OrelUser.class))).thenReturn(new OrelUser());
-        OrelUserDto createdUser = orelUserService.createOrelUser(orelUserDto);
-        verify(orelUserMapper).convertToEntity(orelUserDto);
-        verify(orelUserTemplate).save(any(OrelUser.class));
-
-        assertThat(createdUser).isNotNull();
+        Department department = new Department();
+        when(departmentMapper.convertDepartmentDetailDtoToEntity(orelUserDto)).thenReturn(department);
+        OrelUserDto result = orelUserService.createOrelUser(orelUserDto);
+        verify(orelUserDepartmentTemplate, times(1)).saveOrelUserDepartmentDetails(department);
+        assertEquals(orelUserDto, result);
     }
 
 
-    //Not working
+    /**
+     * Update user by phone number test case.
+     */
     @Test
-    public void testUpdateOrelUser() {
+    public void testUpdateOrelUser1() {
 
         OrelUserDto orelUserDto = new OrelUserDto();
-        orelUserDto.setPhoneNo("+941234567890");
+        orelUserDto.setPhoneNo("1234567890");
         orelUserDto.setLanguage("English");
         orelUserDto.setFirstName("Uditha");
         orelUserDto.setMiddleName("Nayanajith");
         orelUserDto.setEmail("qwe@gmail.com");
         orelUserDto.setDep_name("Engineering");
-        orelUserDto.setDep_contact_no("+941234567897");
+        orelUserDto.setDep_contact_no("01234567897");
         orelUserDto.setDep_email("engineering@example.com");
-        when(orelUserTemplate.findByPhoneNo(orelUserDto.getPhoneNo())).thenReturn(new OrelUser());
-        when(orelUserMapper.convertToUpdateEntity(eq(orelUserDto), any())).thenReturn(new OrelUser());
-        when(departmentMapper.convertUpdateDepartmentDetailDtoToEntity(eq(orelUserDto), any(), any())).thenReturn(new Department());
-        when(orelUserTemplate.save(any(OrelUser.class))).thenReturn(new OrelUser());
 
-
-        OrelUserDto updatedUser = orelUserService.updateOrelUser(orelUserDto);
-
-
-        verify(orelUserTemplate).findByPhoneNo(orelUserDto.getPhoneNo());
-        verify(orelUserMapper).convertToUpdateEntity(eq(orelUserDto), any());
-        verify(departmentMapper).convertUpdateDepartmentDetailDtoToEntity(eq(orelUserDto), any(), any());
-        verify(orelUserTemplate).save(any(OrelUser.class));
-
-//        assertThat(updatedUser).isNotNull();
+        OrelUser savedOrelUser = new OrelUser();
+        when(orelUserTemplate.findByPhoneNo(orelUserDto.getPhoneNo())).thenReturn(savedOrelUser);
+        OrelUser updatedOrelUser = new OrelUser();
+        when(orelUserMapper.convertToUpdateEntity(orelUserDto, savedOrelUser)).thenReturn(updatedOrelUser);
+        Department updateDepartmentDetails = new Department();
+        when(departmentMapper.convertUpdateDepartmentDetailDtoToEntity(orelUserDto, savedOrelUser.getDepartment(), savedOrelUser))
+                .thenReturn(updateDepartmentDetails);
+        when(orelUserTemplate.save(updatedOrelUser)).thenReturn(updatedOrelUser);
+        OrelUserDto updatedDto = orelUserService.updateOrelUser(orelUserDto);
+        verify(orelUserTemplate, times(1)).save(updatedOrelUser);
+        assertEquals(updatedDto, orelUserMapper.convertToDto(updatedOrelUser));
     }
 
 
+    /**
+     * Get orel user by phone number test case.
+     */
     @Test
     public void testGetOrelUserByPhoneNo() {
 
-        String phoneNo = "+941234567890";
+        String phoneNo = "1234567890";
         OrelUser orelUser = new OrelUser();
         when(orelUserTemplate.findByPhoneNo(phoneNo)).thenReturn(orelUser);
         when(orelUserMapper.convertToDto(orelUser)).thenReturn(new OrelUserDto());
@@ -116,6 +120,9 @@ public class OrelUserServiceTest {
     }
 
 
+    /**
+     * Delete user by phone user number test case.
+     */
     @Test
     public void testDeleteOrelUser() {
 
@@ -131,6 +138,9 @@ public class OrelUserServiceTest {
     }
 
 
+    /**
+     * Get orel user by ID test case.
+     */
     @Test
     void testGetOrelUserById() {
 
@@ -144,6 +154,11 @@ public class OrelUserServiceTest {
         assertThat(userDto).isNotNull();
     }
 
+
+
+    /**
+     * Get all users as a list test case.
+     */
     @Test
     void testGetOrelUserList() {
 
