@@ -58,13 +58,10 @@ public class OrelUserControllerTest {
         orelUserDto.setLanguage("English");
         orelUserDto.setFirstName("Uditha");
         orelUserDto.setMiddleName("Nayanajith");
-
         orelUserDto.setEmail("qwe@gmail.com");
         orelUserDto.setDep_name("Engineering");
         orelUserDto.setDep_contact_no("+941234567897");
         orelUserDto.setDep_email("engineering@example.com");
-
-
         when(orelUserService.createOrelUser(any())).thenReturn(orelUserDto);
         mockMvc.perform(post(ApiConstant.BASE_PATH + "/OrelUser").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(orelUserDto)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }

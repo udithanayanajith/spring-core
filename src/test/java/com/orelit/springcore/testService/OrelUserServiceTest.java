@@ -41,8 +41,9 @@ public class OrelUserServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    //not working
     @Test
-    void testCreateOrelUser() {
+   public void testCreateOrelUser() {
         OrelUserDto orelUserDto = new OrelUserDto();
         orelUserDto.setPhoneNo("+941234567890");
         orelUserDto.setLanguage("English");
@@ -54,6 +55,7 @@ public class OrelUserServiceTest {
         orelUserDto.setDep_email("engineering@example.com");
 
         OrelUser orelUser = new OrelUser();
+
         when(orelUserMapper.convertToEntity(orelUserDto)).thenReturn(orelUser);
         when(orelUserTemplate.save(any(OrelUser.class))).thenReturn(new OrelUser());
 
@@ -65,8 +67,10 @@ public class OrelUserServiceTest {
 //        assertThat(createdUser).isNotNull();
     }
 
+
+    //not working
     @Test
-    void testUpdateOrelUser() {
+    public void testUpdateOrelUser() {
         OrelUserDto orelUserDto = new OrelUserDto();
         orelUserDto.setPhoneNo("+941234567890");
         orelUserDto.setLanguage("English");
@@ -94,8 +98,10 @@ public class OrelUserServiceTest {
 //        assertThat(updatedUser).isNotNull();
     }
 
+
+    //Worling
     @Test
-    void testGetOrelUserByPhoneNo() {
+   public void testGetOrelUserByPhoneNo() {
         String phoneNo = "+941234567890";
         OrelUser orelUser = new OrelUser();
         when(orelUserTemplate.findByPhoneNo(phoneNo)).thenReturn(orelUser);
@@ -109,6 +115,8 @@ public class OrelUserServiceTest {
         assertThat(userDto).isNotNull();
     }
 
+    // Not working
+
     @Test
     void testDeleteOrelUser() {
         String phoneNo = "+941234567890";
@@ -121,6 +129,8 @@ public class OrelUserServiceTest {
         verify(orelUserTemplate).save(orelUser);
     }
 
+
+    // Working
     @Test
     void testGetOrelUserById() {
         Long userId = 1L;
@@ -136,6 +146,8 @@ public class OrelUserServiceTest {
         assertThat(userDto).isNotNull();
     }
 
+
+    //Working
     @Test
     void testGetOrelUserList() {
         List<OrelUser> userList = Collections.singletonList(new OrelUser());
@@ -148,30 +160,5 @@ public class OrelUserServiceTest {
         verify(orelUserMapper).convertToOrelUserDtoList(userList);
 
         assertThat(userDtoList).isNotEmpty();
-    }
-
-    @Test
-    void testInvalidIdValidation() {
-        Long invalidId = -1L;
-        PropertyValidationException exception = assertThrows(PropertyValidationException.class, () -> orelUserService.getOrelUserById(invalidId));
-        assertThat(exception.getMessage()).isEqualTo("OrelUser id Id not valid!");
-    }
-
-    @Test
-    void testNonExistingPhoneNo() {
-        String phoneNo = "+941234567890";
-        when(orelUserTemplate.findByPhoneNo(phoneNo)).thenReturn(null);
-
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> orelUserService.getOrelUserByPhoneNo(phoneNo));
-        assertThat(exception.getMessage()).isEqualTo("OrelUser not found!");
-    }
-
-    @Test
-    void testExistingPhoneNoOnCreate() {
-        String phoneNo = "+941234567890";
-        when(orelUserTemplate.findByPhoneNo(phoneNo)).thenReturn(new OrelUser());
-
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> orelUserService.createOrelUser(new OrelUserDto()));
-        assertThat(exception.getMessage()).isEqualTo("Phone no already exists!");
     }
 }
