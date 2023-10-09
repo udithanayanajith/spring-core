@@ -53,13 +53,13 @@ public class OrelUserControllerTest {
     public void testCreateorelUser() throws Exception {
 
         OrelUserDto orelUserDto = new OrelUserDto();
-        orelUserDto.setPhoneNo("+941234567890");
+        orelUserDto.setPhoneNo("0123456789");
         orelUserDto.setLanguage("English");
         orelUserDto.setFirstName("Uditha");
         orelUserDto.setMiddleName("Nayanajith");
         orelUserDto.setEmail("qwe@gmail.com");
         orelUserDto.setDep_name("Engineering");
-        orelUserDto.setDep_contact_no("+941234567897");
+        orelUserDto.setDep_contact_no("0123456789");
         orelUserDto.setDep_email("engineering@example.com");
         when(orelUserService.createOrelUser(any())).thenReturn(orelUserDto);
         mockMvc.perform(post(ApiConstant.BASE_PATH + "/OrelUser").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(orelUserDto)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
@@ -74,13 +74,13 @@ public class OrelUserControllerTest {
     public void testUpdateOrelUser() throws Exception {
 
         OrelUserDto orelUserDto = new OrelUserDto();
-        orelUserDto.setPhoneNo("+941234567800");
+        orelUserDto.setPhoneNo("0123456789");
         orelUserDto.setLanguage("English");
         orelUserDto.setFirstName("Uditha");
         orelUserDto.setMiddleName("Nayanajith");
         orelUserDto.setEmail("qwe@gmail.com");
         orelUserDto.setDep_name("Engineering");
-        orelUserDto.setDep_contact_no("+941234567898");
+        orelUserDto.setDep_contact_no("0123456789");
         orelUserDto.setDep_email("engineering@example.com");
 
         when(orelUserService.updateOrelUser(any(OrelUserDto.class))).thenReturn(orelUserDto);

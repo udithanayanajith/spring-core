@@ -49,8 +49,8 @@ public class OrelUserService {
 
         existsPhoneNoValidation(orelUserDto.getPhoneNo());
         OrelUser orelUser = orelUserMapper.convertToEntity(orelUserDto);
-        //OrelUser savedUser = OrelUserTemplate.save(orelUser);
-        Department department = departmentMapper.convertDepartmentDetailDtoToEntity(orelUserDto);
+        OrelUser savedUser = OrelUserTemplate.save(orelUser);
+        Department department = departmentMapper.convertDepartmentDetailDtoToEntity(orelUserDto,savedUser);
         orelUserDepartmentTemplate.saveOrelUserDepartmentDetails(department);
         return orelUserDto;
 
