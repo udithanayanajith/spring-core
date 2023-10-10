@@ -1,11 +1,11 @@
-package com.orelit.springcore.common.dto;
+package com.orelit.springcore.common.dto.webClient;
 
 /**
  * AccountDetailsDto
  * Author: udithan
  * Date: 10-Oct-23
  */
-public class AccountDetailsDto {
+public class AccountDetail {
 
     private String accountNumber;
 
