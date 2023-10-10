@@ -1,4 +1,5 @@
 package com.orelit.springcore.presentation;
+
 import com.orelit.springcore.business.OrelUserService;
 import com.orelit.springcore.common.constant.ApiConstant;
 import com.orelit.springcore.common.dto.OrelUserDto;
@@ -16,6 +17,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -40,12 +42,15 @@ public class OrelUserController {
      * @return - The created OrelUserDto.
      */
     @Operation(summary = "Create OrelUser.")
-    @PostMapping
     @ResponseStatus(code = HttpStatus.OK)
-    @ApiResponse(responseCode = "422", description = "Validation failed",
-            content = @Content(schema = @Schema(implementation = ErrorMessageDto.class),
-                    examples = @ExampleObject(ErrorExample.VALIDATION_FAILED)))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "422", description = "Validation failed",
+                    content = {@Content(schema = @Schema(implementation = ErrorMessageDto.class),
+                            examples = @ExampleObject(ErrorExample.VALIDATION_FAILED))})})
+    @PostMapping
     public OrelUserDto createOrelUser(@Valid @RequestBody OrelUserDto orelUserDto) {
+
         return orelUserService.createOrelUser(orelUserDto);
     }
 
@@ -55,11 +60,10 @@ public class OrelUserController {
      * @param orelUserDto - Contains updated OrelUser details.
      * @return - The updated OrelUserDto.
      */
-    @PutMapping
-    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update a OrelUser.")
-    @ApiResponse(responseCode = "200", description = "OK")
+    @ResponseStatus(HttpStatus.OK)
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "422", description = "Validation failed",
                     content = {@Content(schema = @Schema(implementation = ErrorMessageDto.class),
                             examples = @ExampleObject(ErrorExample.VALIDATION_FAILED))}),
@@ -69,7 +73,9 @@ public class OrelUserController {
             @ApiResponse(responseCode = "409", description = "Invalid version",
                     content = {@Content(schema = @Schema(implementation = OptimisticLockingFailureException.class),
                             examples = @ExampleObject(ErrorExample.OPTIMISTIC_LOCK))})})
+    @PutMapping
     public OrelUserDto updateOrelUser(@Valid @RequestBody OrelUserDto orelUserDto) {
+
         return orelUserService.updateOrelUser(orelUserDto);
     }
 
@@ -82,12 +88,12 @@ public class OrelUserController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get OrelUser by phone no.")
-    @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "OrelUser not found",
                     content = {@Content(schema = @Schema(implementation = ErrorMessageDto.class),
                             examples = @ExampleObject(ErrorExample.NOT_FOUND))})})
     public OrelUserDto getOrelUser(@Valid @RequestParam String phoneNo) {
+
         return orelUserService.getOrelUserByPhoneNo(phoneNo);
     }
 
@@ -96,42 +102,53 @@ public class OrelUserController {
      *
      * @param phoneNo - The phone number to delete a OrelUser.
      */
-    @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Delete OrelUser.")
-    @ApiResponse(responseCode = "200", description = "OK")
-    @ApiResponses(value = {
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "OrelUser not found",
                     content = {@Content(schema = @Schema(implementation = ErrorMessageDto.class),
                             examples = @ExampleObject(ErrorExample.NOT_FOUND))}),
             @ApiResponse(responseCode = "409", description = "Invalid version",
                     content = {@Content(schema = @Schema(implementation = OptimisticLockingFailureException.class),
                             examples = @ExampleObject(ErrorExample.OPTIMISTIC_LOCK))})})
+    @DeleteMapping
     public void deleteOrelUser(String phoneNo) {
+
         orelUserService.deleteOrelUser(phoneNo);
     }
 
-    @GetMapping("/{id}")
+    /**
+     * Get OrelUser by id.
+     *
+     * @param id-orel user ID.
+     * @return
+     */
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get OrelUser by id.")
-    @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "OrelUser not found",
                     content = {@Content(schema = @Schema(implementation = ErrorMessageDto.class),
                             examples = @ExampleObject(ErrorExample.NOT_FOUND))})})
+    @GetMapping("/{id}")
     public OrelUserDto getOrelUserById(@Valid @PathVariable Long id) {
+
         return orelUserService.getOrelUserById(id);
     }
 
-    @GetMapping("/list")
+    /**
+     * Get OrelUser list.
+     *
+     * @return
+     */
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get OrelUser list")
-    @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "OrelUser not found",
                     content = {@Content(schema = @Schema(implementation = ErrorMessageDto.class),
                             examples = @ExampleObject(ErrorExample.NOT_FOUND))})})
+    @GetMapping("/list")
     public List<OrelUserDto> getOrelUserList() {
+
         return orelUserService.getOrelUserList();
     }
 }

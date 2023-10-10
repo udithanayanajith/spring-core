@@ -1,6 +1,5 @@
 package com.orelit.springcore.business;
 
-
 import com.orelit.springcore.common.constant.SystemConstants;
 import com.orelit.springcore.common.dto.OrelUserDto;
 import com.orelit.springcore.common.exception.NotFoundException;
@@ -48,8 +47,7 @@ public class OrelUserService {
     public OrelUserDto createOrelUser(OrelUserDto orelUserDto) {
 
         existsPhoneNoValidation(orelUserDto.getPhoneNo());
-        OrelUser orelUser = orelUserMapper.convertToEntity(orelUserDto);
-        OrelUser savedUser = OrelUserTemplate.save(orelUser);
+        OrelUser savedUser = OrelUserTemplate.save(orelUserMapper.convertToEntity(orelUserDto));
         Department department = departmentMapper.convertDepartmentDetailDtoToEntity(orelUserDto,savedUser);
         orelUserDepartmentTemplate.saveOrelUserDepartmentDetails(department);
         return orelUserDto;

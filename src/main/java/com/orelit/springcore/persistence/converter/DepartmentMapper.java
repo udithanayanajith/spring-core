@@ -31,9 +31,6 @@ public class DepartmentMapper {
 
         Department department = modelMapper.map(OrelUserDto, Department.class);
         department.setOrelUser(savedUser);
-        department.setDep_name(OrelUserDto.getDep_name());
-        department.setDep_email(OrelUserDto.getDep_email());
-        department.setDep_contact_no(OrelUserDto.getDep_contact_no());
         return department;
 
     }

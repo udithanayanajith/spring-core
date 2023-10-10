@@ -9,7 +9,6 @@ import com.orelit.springcore.presentation.OrelUserController;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,7 +32,7 @@ public class OrelUserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Mock
+    @Autowired
     private OrelUserService orelUserService;
     @Autowired
     private final ObjectMapper objectMapper = new ObjectMapper();

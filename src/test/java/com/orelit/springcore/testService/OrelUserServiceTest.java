@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +35,7 @@ public class OrelUserServiceTest {
 
     @Mock
     private OrelUserMapper orelUserMapper;
+
     @Mock
     private DepartmentMapper departmentMapper;
 
@@ -59,21 +61,21 @@ public class OrelUserServiceTest {
         orelUserDto.setDep_email("engineering@example.com");
 
         when(orelUserTemplate.findByPhoneNo(orelUserDto.getPhoneNo())).thenReturn(null);
-        OrelUser orelUser = new OrelUser();
+        OrelUser orelUser = null;
         when(orelUserMapper.convertToEntity(orelUserDto)).thenReturn(orelUser);
-        Department department = new Department();
-        when(departmentMapper.convertDepartmentDetailDtoToEntity(orelUserDto)).thenReturn(department);
+        Department department = null;
+      
+        when(departmentMapper.convertDepartmentDetailDtoToEntity(orelUserDto,orelUser)).thenReturn(department);
         OrelUserDto result = orelUserService.createOrelUser(orelUserDto);
         verify(orelUserDepartmentTemplate, times(1)).saveOrelUserDepartmentDetails(department);
         assertEquals(orelUserDto, result);
     }
 
-
     /**
      * Update user by phone number test case.
      */
     @Test
-    public void testUpdateOrelUser1() {
+    public void testUpdateOrelUser() {
 
         OrelUserDto orelUserDto = new OrelUserDto();
         orelUserDto.setPhoneNo("1234567890");
@@ -98,7 +100,6 @@ public class OrelUserServiceTest {
         assertEquals(updatedDto, orelUserMapper.convertToDto(updatedOrelUser));
     }
 
-
     /**
      * Get orel user by phone number test case.
      */
@@ -114,7 +115,6 @@ public class OrelUserServiceTest {
         verify(orelUserMapper).convertToDto(orelUser);
         assertThat(userDto).isNotNull();
     }
-
 
     /**
      * Delete user by phone user number test case.
@@ -133,7 +133,6 @@ public class OrelUserServiceTest {
         verify(orelUserTemplate, times(1)).delete(user);
     }
 
-
     /**
      * Get orel user by ID test case.
      */
@@ -141,7 +140,7 @@ public class OrelUserServiceTest {
     void testGetOrelUserById() {
 
         Long userId = 1L;
-        OrelUser orelUser = new OrelUser();
+        OrelUser orelUser = null;
         when(orelUserTemplate.findById(userId)).thenReturn(orelUser);
         when(orelUserMapper.convertToDto(orelUser)).thenReturn(new OrelUserDto());
         OrelUserDto userDto = orelUserService.getOrelUserById(userId);
@@ -149,7 +148,6 @@ public class OrelUserServiceTest {
         verify(orelUserMapper).convertToDto(orelUser);
         assertThat(userDto).isNotNull();
     }
-
 
     /**
      * Get all users as a list test case.
