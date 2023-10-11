@@ -1,3 +1,4 @@
+
 package com.orelit.springcore.common.constant;
 
 public class WebClientErrorMessageConstants {
@@ -11,4 +12,5 @@ public class WebClientErrorMessageConstants {
     public final static String SUCCESSFULLY_RETRIEVED = "Successfully retrieved.";
 
     public final static String FAILED = "Failed to retrieve.";
+
 }
