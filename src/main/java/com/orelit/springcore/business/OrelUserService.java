@@ -11,6 +11,8 @@ import com.orelit.springcore.persistence.entity.Department;
 import com.orelit.springcore.persistence.entity.OrelUser;
 import com.orelit.springcore.persistence.repository.OrelUserDepartmentTemplate;
 import com.orelit.springcore.persistence.repository.OrelUserTemplate;
+import com.orelit.springcore.persistence.repository.webClient.WebClientTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,11 +32,15 @@ public class OrelUserService {
 
     private final DepartmentMapper departmentMapper;
 
-    public OrelUserService(OrelUserTemplate OrelUserTemplate, OrelUserDepartmentTemplate orelUserDepartmentTemplate, OrelUserMapper orelUserMapper, DepartmentMapper departmentMapper) {
+
+    private final WebClientTemplate webClientTemplate;
+
+    public OrelUserService(OrelUserTemplate OrelUserTemplate, OrelUserDepartmentTemplate orelUserDepartmentTemplate, OrelUserMapper orelUserMapper, DepartmentMapper departmentMapper, WebClientTemplate webClientTemplate) {
         this.OrelUserTemplate = OrelUserTemplate;
         this.orelUserDepartmentTemplate = orelUserDepartmentTemplate;
         this.orelUserMapper = orelUserMapper;
         this.departmentMapper = departmentMapper;
+        this.webClientTemplate = webClientTemplate;
     }
 
     /**
@@ -48,7 +54,7 @@ public class OrelUserService {
 
         existsPhoneNoValidation(orelUserDto.getPhoneNo());
         OrelUser savedUser = OrelUserTemplate.save(orelUserMapper.convertToEntity(orelUserDto));
-        Department department = departmentMapper.convertDepartmentDetailDtoToEntity(orelUserDto,savedUser);
+        Department department = departmentMapper.convertDepartmentDetailDtoToEntity(orelUserDto, savedUser);
         orelUserDepartmentTemplate.saveOrelUserDepartmentDetails(department);
         return orelUserDto;
 
@@ -99,7 +105,9 @@ public class OrelUserService {
      */
     public OrelUserDto getOrelUserByPhoneNo(String phoneNo) {
 
+        webClientTemplate.getAccountDetail(phoneNo);
         OrelUser orelUser = OrelUserTemplate.findByPhoneNo(phoneNo);
+
         if (orelUser == null) {
             existsOrelUserValidation(phoneNo);
             return null;
