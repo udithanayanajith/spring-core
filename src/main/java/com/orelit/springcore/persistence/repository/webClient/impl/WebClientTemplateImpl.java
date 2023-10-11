@@ -4,8 +4,14 @@ import com.orelit.springcore.common.dto.webClient.AccountDetail;
 import com.orelit.springcore.common.dto.webClient.AccountDetailResponse;
 import com.orelit.springcore.persistence.repository.webClient.WebClientTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
+
+import java.time.Duration;
 
 import static com.orelit.springcore.common.constant.webClientConstants.*;
 
@@ -29,7 +35,12 @@ public class WebClientTemplateImpl implements WebClientTemplate {
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        error -> Mono.error(new RuntimeException("API not found")))
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        error -> Mono.error(new RuntimeException("Server is not responding!")))
                 .bodyToMono(AccountDetailResponse.class)
+                .retryWhen(Retry.backoff(3, Duration.ofSeconds(2)))
                 .block();
     }
 
